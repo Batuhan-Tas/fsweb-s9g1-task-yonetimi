@@ -5,22 +5,29 @@ import TaskForm from "./TaskForm";
 import TaskHookForm from "./TaskHookForm";
 import PeopleForm from "./PeopleForm";
 import { initialTasks, initialTeam } from "./data";
-
+import { toast } from "react-toastify";
 
 function App() {
+  const notify = (text) => toast(text);
   const [tasks, setTasks] = useState(initialTasks);
   const [team, setTeam] = useState(initialTeam);
 
   function handleTaskSubmit(yeniTask) {
-    setTasks([yeniTask, ...tasks])
+    setTasks([yeniTask, ...tasks]);
   }
 
   function handlePeopleSubmit(yeniKisi) {
-    setTeam([...team, yeniKisi])
+    setTeam([...team, yeniKisi]);
+    notify(yeniKisi + "Hazır");
   }
 
   function handleComplete(id) {
-    console.log("tamamlama fonksiyonunu buraya yazın")
+    console.log("tamamlama fonksiyonunu buraya yazın");
+    const tasksClone = [...tasks];
+    const updateTask = tasksClone.find((t) => t.id == id);
+    updateTask.status = "yapıldı";
+    setTasks(tasksClone);
+    notify(updateTask.title + " tamamlandı");
   }
 
   return (
@@ -59,7 +66,6 @@ function App() {
           </div>
         </div>
       </div>
-
     </div>
   );
 }
